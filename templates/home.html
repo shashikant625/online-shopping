@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+{% comment %} <header class="section-heading">
+  <a herf="{%%}" class="btn btn-outline-primary float-rihit">see all<a/> {% endcomment %}
+
+
+<div class="container mt-5 pt-5">
+  <a href="{% url 'store' %}" class="btn btn-outline-primary float-right"> see all<a/>
+  <h3 class="mb-4">Popular Products</h3>
+
+  <div class="row">
+	{% for product in products %}
+    
+    <div class="col-md-3">
+      <figure class="card card-product-grid">
+
+        <!-- Image -->
+        <div class="img-wrap">
+           <a href="{{ product.get_url}}"> <img src="{{ product.images.url }}" class="img-fluid" style="height:200px; object-fit:cover;"> </a>
+        </div>
+
+        <!-- Info -->
+        <figcaption class="info-wrap border-top text-center">
+          <a href="{{ product.get_url}}" class="title d-block mb-2">{{ product.product_name}}</a>
+          <div class="price mt-2 text-primary font-weight-bold">{{ product.price }}</div>
+
+          <div class="rating-star">
+            <span>
+                <i class="{% if product.averageReview >= 1 %}fas{% else %}far{% endif %} fa-star"></i>
+                <i class="{% if product.averageReview >= 2 %}fas{% else %}far{% endif %} fa-star"></i>
+                <i class="{% if product.averageReview >= 3 %}fas{% else %}far{% endif %} fa-star"></i>
+                <i class="{% if product.averageReview >= 4 %}fas{% else %}far{% endif %} fa-star"></i>
+                <i class="{% if product.averageReview >= 5 %}fas{% else %}far{% endif %} fa-star"></i>
+            </span>
+        </div>
+          
+
+        </figcaption>
+
+      </figure>
+    </div>
+	{% endfor %}
+  </div>
+</div>
+
+{% endblock %}

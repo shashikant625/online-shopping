@@ -1,0 +1,243 @@
+{% load static %}
+
+
+<div class="container-fluid" style="text-align:center;background-image: linear-gradient(to right, #3167EB , #7A7A7A);padding:10px;font-weight: 600;position:sticky;top:0;z-index:999;">
+<a href="#" style="color: white;text-transform: uppercase;letter-spacing: 2px;"><span>&#x1F525</span> Shashi Kant  | Web Page Cart <span>&#x1F525</span></a>
+</div> <!-- container //  -->
+
+<header class="section-header">
+
+
+
+<section class="header-main border-bottom">
+  <div class="container">
+<div class="row align-items-center">
+  <div class="col-lg-2 col-md-3 col-6">
+    <a href="{% url 'home' %}" class="brand-wrap">
+      <img class="logo" src="{% static 'images/items/102.jpg' %}">
+    </a> <!-- brand-wrap.// -->
+  </div>
+  <div class="col-lg col-sm col-md col-6 flex-grow-0">
+    <div class="category-wrap dropdown d-inline-block float-right">
+      {% comment %} <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bars"></i> All category
+      </button> {% endcomment %}
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="{% url 'store' %}">All Products </a>
+        {% for category in links %}
+          <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
+        {% endfor %}
+      </div>
+    </div>  
+  </div>
+  <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
+  <div class="col-lg  col-md-6 col-sm-12 col">
+    <form action="{% url 'search' %}" class="search" method='GET'>
+      <div class="input-group w-100">
+          <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" required>
+
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+    </form> <!-- search-wrap .end// -->
+  </div> <!-- col.// -->
+  <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
+        <div class="d-flex justify-content-end mb-3 mb-lg-0">
+          {% if user.id is None %}
+          <div class="widget-header">
+            <small class="title text-muted">Welcome guest!</small>
+            <div>
+              <a href="{% url 'login' %}">Sign in</a> <span class="dark-transp"> | </span>
+              <a href="{% url 'register' %}"> Register</a>
+            </div>
+          </div>
+          {% else %}
+          <div class="widget-header">
+            <small class="title text-muted">Welcome {{user.first_name}}!</small>
+            <div>
+              <a href="{% url 'dashboard' %}">Dashboard</a> <span class="dark-transp"> | </span>
+              <a href="{% url 'logout' %}"> Logout</a>
+            </div>
+          </div>
+          {% endif %}
+          <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
+            <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+            <span class="badge badge-pill badge-danger notify">{{cart_count}}</span>
+          </a>
+
+        </div> <!-- widgets-wrap.// -->
+
+      </div> <!-- col.// -->
+</div> <!-- row.// -->
+  </div> <!-- container.// -->
+</section> <!-- header-main .// -->
+<div class="cat-wrapper">
+    
+    <button class="scroll-btn left" onclick="scrollCat(-200)">‹</button>
+
+    <!-- CATEGORY BAR -->
+    <div class="category-bar" id="catBar">
+        <a href="{% url 'store' %}" class="cat-item active">All</a>
+
+        {% for category in links %}
+            <a href="{{ category.get_url }}" class="cat-item">
+                {{ category.category_name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <button class="scroll-btn right" onclick="scrollCat(200)">›</button>
+
+</div>
+
+
+<!-- 🔥 SLIDER ONLY HOME -->
+{% if request.resolver_match.url_name == 'home' %}
+
+<div id="heroCarousel" class="carousel slide" data-ride="carousel">
+
+    <div class="carousel-inner">
+
+        <div class="carousel-item active">
+            <img src="{% static 'images/items/20.jpg' %}" class="d-block w-100 slider-img">
+        </div>
+
+        <div class="carousel-item">
+            <img src="{% static 'images/items/21.jpg' %}" class="d-block w-100 slider-img">
+        </div>
+
+    </div>
+
+    <!-- arrows -->
+    <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+
+    <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+
+</div>
+
+{% endif %}
+
+
+<!-- ✅ CSS -->
+<style>
+
+    /* CATEGORY WRAPPER FIX */
+    .cat-wrapper {
+        display: flex;
+        align-items: center;
+        overflow: hidden;   /* important */
+    }
+    
+    /* CATEGORY SLIDER FIX */
+    .category-bar {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+    
+        overflow-x: auto;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+    
+        flex: 1; /* 🔥 main fix (full width lega) */
+    }
+    
+    /* hide scrollbar */
+    .category-bar::-webkit-scrollbar {
+        display: none;
+    }
+    .category-bar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    /* category item */
+    .cat-item {
+        flex: 0 0 auto;
+        text-decoration: none;
+        background: #fff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        color: #333;
+        transition: 0.3s;
+    }
+    
+    /* hover */
+    .cat-item:hover {
+        background: #007bff;
+        color: #fff;
+    }
+    
+    .cat-item.active {
+        background: #007bff;
+        color: #fff;
+    }
+    
+    /* buttons */
+    .scroll-btn {
+        border: none;
+        background: #007bff;
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+    
+    /* mobile pe buttons hide */
+    @media (max-width: 768px) {
+        .scroll-btn {
+            display: none;
+        }
+    }
+    
+    /* slider image */
+    .slider-img {
+        height: 280px;
+        object-fit: cover;
+    }
+    
+    @media (max-width: 768px) {
+        .slider-img {
+            height: 180px;
+        }
+    }
+
+</style>
+
+
+<!-- REQUIRED JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- ✅ CATEGORY SCROLL JS -->
+<script>
+function scrollCat(value) {
+    document.getElementById("catBar").scrollBy({
+        left: value,
+        behavior: 'smooth'
+    });
+}
+</script>
+
+
+<!-- ✅ AUTO SLIDE (slower & smooth) -->
+<script>
+$('.carousel').carousel({
+    interval: 5000,   // speed slow kiya
+    pause: false,
+    ride: 'carousel'
+});
+</script>
+
+
+
+</header> <!-- section-header.// -->
