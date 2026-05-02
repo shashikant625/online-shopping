@@ -3,3 +3,4 @@ google-generativeai
 gunicorn
 django
 python-decouple==3.8
+django-extensions
